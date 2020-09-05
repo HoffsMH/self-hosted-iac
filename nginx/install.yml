@@ -1,0 +1,25 @@
+---
+- hosts: all
+  tasks:
+    - name: install nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: true
+
+    - name: install certbot
+      apt:
+        name: certbot
+        state: latest
+        update_cache: true
+
+    - name: install python-certbot
+      apt:
+        name: python-certbot-nginx
+        state: latest
+        update_cache: true
+
+    - name: start nginx
+      service:
+          name: nginx
+          state: started

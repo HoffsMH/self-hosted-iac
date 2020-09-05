@@ -1,0 +1,33 @@
+---
+- hosts: all
+  tasks:
+    - name: Copy file with owner and permissions
+      copy:
+        src: ./site.conf
+        dest: /etc/nginx/sites-enabled/site.conf
+        owner: root
+        group: root
+        mode: '0700'
+
+    - git:
+        repo: 'https://github.com/HoffsMH/mhkr.io.git'
+        dest: /srv/git/mhkr.io
+        version: master
+
+    - name: Remove before re-creation
+      file:
+        path: /srv/www
+        state: absent
+
+    - name: Link
+      file:
+        src: /srv/git/mhkr.io/dist
+        dest: /srv/www
+        owner: root
+        group: root
+        state: link
+
+    - name: restart nginx
+      service:
+          name: nginx
+          state: restarted
