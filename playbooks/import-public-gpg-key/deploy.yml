@@ -10,7 +10,7 @@
 
     - name: Upload pgp key
       copy:
-        content: "{{ lookup('url', 'https://raw.githubusercontent.com/HoffsMH/mhkr.io/master/dist/gpg', split_lines=False) }}"
+        content: "{{ lookup('url', 'https://raw.githubusercontent.com/HoffsMH/mhkr.io/master/dist/key.pub', split_lines=False) }}"
         dest: /root/mhkr/pub
         mode: 600
 
