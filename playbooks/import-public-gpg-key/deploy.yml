@@ -12,6 +12,7 @@
       copy:
         content: "{{ lookup('url', 'https://raw.githubusercontent.com/HoffsMH/mhkr.io/master/dist/gpg', split_lines=False) }}"
         dest: /root/mhkr/pub
+        mode: 600
 
     - name: import pgp key
       command: "gpg --import /root/mhkr/pub"

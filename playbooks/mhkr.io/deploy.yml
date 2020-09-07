@@ -1,12 +1,18 @@
 ---
 - name: ssh setup
   import_playbook: ../ssh/deploy.yml
+  tags:
+    - provision
 
 - name: nginx install
   import_playbook: ../nginx/deploy.yml
+  tags:
+    - provision
 
 - name: import my public key
   import_playbook: ../import-public-gpg-key/deploy.yml
+  tags:
+    - provision
 
 - hosts: all
   vars:
@@ -47,4 +53,6 @@
 
 - name: certbot
   import_playbook: ../certbot-nginx/deploy.yml
+  tags:
+    - provision
 
