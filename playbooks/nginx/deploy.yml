@@ -1,0 +1,12 @@
+---
+- hosts: all
+  vars:
+    packages:
+      - nginx
+  tasks:
+
+    - name: install packages
+      apt:
+        pkg: "{{ packages }}"
+        state: latest
+        update_cache: true
