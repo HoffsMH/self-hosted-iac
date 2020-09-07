@@ -1,23 +1,40 @@
 ---
+- name: ssh setup
+  import_playbook: ../ssh/deploy.yml
+
+- name: nginx install
+  import_playbook: ../nginx/deploy.yml
+
+- name: import my public key
+  import_playbook: ../import-public-gpg-key/deploy.yml
+
 - hosts: all
+  vars:
+    packages:
+      - git
+      - duplicity
   tasks:
+
+    - name: install packages
+      apt:
+        pkg: "{{ packages }}"
+        state: latest
+        update_cache: true
+
     - name: Copy file with owner and permissions
       copy:
-        src: ./site.conf
-        dest: /etc/nginx/sites-enabled/site.conf
+        src: ./nginx.conf
+        dest: /etc/nginx/sites-enabled/mhkr.io.conf
         owner: root
         group: root
         mode: '0700'
+        force: no
 
     - git:
         repo: 'https://github.com/HoffsMH/mhkr.io.git'
         dest: /srv/git/mhkr.io
+        force: yes
         version: master
-
-    - name: Remove before re-creation
-      file:
-        path: /srv/www
-        state: absent
 
     - name: Link
       file:
@@ -25,9 +42,9 @@
         dest: /srv/www
         owner: root
         group: root
+        force: yes
         state: link
 
-    - name: restart nginx
-      service:
-          name: nginx
-          state: restarted
+- name: certbot
+  import_playbook: ../certbot-nginx/deploy.yml
+
