@@ -35,18 +35,6 @@
         force: yes
         version: master
 
-    - name: Add pub as a text mime type to nginx
-      replace:
-        path: /etc/nginx/mime.types
-        regexp: "^text"
-        replace: "text/plain    txt asc text pm el c h cc hh cxx hxx f90 conf log pub;"
-
-    - name: remove extstream
-      lineinfile:
-        path: /etc/nginx/mime.types
-        regexp: "^application/vnd.exstream-package"
-        state: absent
-
     - name: Link
       file:
         src: /srv/git/mhkr.io/dist
