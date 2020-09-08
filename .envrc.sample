@@ -1,3 +1,1 @@
-export ROOT_PW="xxx"
-export DEPLOY_PW="xxx"
 export SSH_PUB="ssh-add -L"
