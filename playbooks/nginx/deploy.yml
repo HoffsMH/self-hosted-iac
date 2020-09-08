@@ -10,3 +10,8 @@
         pkg: "{{ packages }}"
         state: latest
         update_cache: true
+
+    - name: start nginx
+      service:
+          name: nginx
+          state: started

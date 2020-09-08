@@ -1,9 +1,9 @@
 ---
   - name: Change root password
-    user: name=root password="{{ lookup('env', 'ROOT_PW') }}"
+    user: name=root
 
   - name: Add deploy user
-    user: name=deploy password="{{ lookup('env', 'ROOT_PW') }}" shell=/bin/bash
+    user: name=deploy
 
   - name: Add authorized keys for deploy user
     authorized_key: user=deploy
@@ -25,7 +25,7 @@
   - name: Upgrade APT to the latest packages
     apt: upgrade=safe
 
-  - name: Install required packages
+  - name: Install unattended-upgrades
     apt: state=latest pkg=unattended-upgrades
 
   - name: Adjust APT update intervals

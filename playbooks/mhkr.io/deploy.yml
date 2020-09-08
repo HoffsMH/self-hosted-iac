@@ -9,25 +9,18 @@
   tags:
     - provision
 
-- name: import my public key
-  import_playbook: ../import-public-gpg-key/deploy.yml
-  tags:
-    - provision
-
 - hosts: all
   vars:
     packages:
       - git
-      - duplicity
   tasks:
-
     - name: install packages
       apt:
         pkg: "{{ packages }}"
         state: latest
         update_cache: true
 
-    - name: Copy file with owner and permissions
+    - name: copy nginx.conf over
       copy:
         src: ./nginx.conf
         dest: /etc/nginx/sites-enabled/mhkr.io.conf
@@ -42,6 +35,18 @@
         force: yes
         version: master
 
+    - name: Add pub as a text mime type to nginx
+      replace:
+        path: /etc/nginx/mime.types
+        regexp: "^text"
+        replace: "text/plain    txt asc text pm el c h cc hh cxx hxx f90 conf log pub;"
+
+    - name: remove extstream
+      lineinfile:
+        path: /etc/nginx/mime.types
+        regexp: "^application/vnd.exstream-package"
+        state: absent
+
     - name: Link
       file:
         src: /srv/git/mhkr.io/dist
@@ -51,8 +56,17 @@
         force: yes
         state: link
 
-- name: certbot
-  import_playbook: ../certbot-nginx/deploy.yml
+    - name: restart nginx
+      service:
+          name: nginx
+          state: restarted
+
+# - name: certbot
+#   import_playbook: ../certbot-nginx/deploy.yml
+#   tags:
+#     - provision
+
+- name: git setup
+  import_playbook: ../git-server/deploy.yml
   tags:
     - provision
-
