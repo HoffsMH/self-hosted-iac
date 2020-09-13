@@ -49,10 +49,10 @@
           name: nginx
           state: restarted
 
-# - name: certbot
-#   import_playbook: ../certbot-nginx/deploy.yml
-#   tags:
-#     - provision
+- name: certbot
+  import_playbook: ../certbot-nginx/deploy.yml
+  tags:
+    - provision
 
 - name: git setup
   import_playbook: ../git-server/deploy.yml
