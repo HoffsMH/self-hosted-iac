@@ -38,10 +38,10 @@
                 state=present
     notify: Restart ssh
 
-  - name: Disallow PAM
+  - name: Allow PAM
     lineinfile: dest=/etc/ssh/sshd_config
                 regexp="^UsePAM"
-                line="UsePAM no"
+                line="UsePAM yes"
                 state=present
     notify: Restart ssh
 
