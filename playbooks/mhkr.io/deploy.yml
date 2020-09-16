@@ -19,6 +19,8 @@
         pkg: "{{ packages }}"
         state: latest
         update_cache: true
+      tags:
+        - provision
 
     - name: copy nginx.conf over
       copy:
@@ -37,14 +39,19 @@
         force: yes
         version: master
 
-    - name: Link
+    - name: remove previous www
       file:
-        src: /srv/git/mhkr.io/dist
+        path: /srv/www
+        state: absent
+
+    - name: copy dist over
+      copy:
+        remote_src: yes
+        src: /srv/git/mhkr.io/dist/
         dest: /srv/www
         owner: root
-        group: root
+        mode: '0755'
         force: yes
-        state: link
 
     - name: restart nginx
       service:
