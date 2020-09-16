@@ -28,6 +28,8 @@
         group: root
         mode: '0700'
         force: no
+      tags:
+        - provision
 
     - git:
         repo: 'https://github.com/HoffsMH/mhkr.io.git'
